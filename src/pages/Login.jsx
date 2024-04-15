@@ -26,7 +26,7 @@ export default function Login(){
                   size="small"
                   sx={{
                     input:{
-                        color:"white"
+                        color:"orange"
                     }
                   }}
                   InputLabelProps={{style : {color : 'orange'}}}

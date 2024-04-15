@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import './index.css'
 import Login from './pages/Login.jsx'
 import Medicines from './pages/medicines'
 import { RouterProvider } from "react-router"
