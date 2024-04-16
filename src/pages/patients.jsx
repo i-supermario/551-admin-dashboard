@@ -2,18 +2,15 @@ import { useState } from "react"
 import Box from '@mui/material/Box';
 import { Typography, Button, TextField, Container, Modal } from '@mui/material';
 import useAPI from "../hooks/UseAPI";
-import Medicine from "../components/Medicine";
+import Patient from "../components/Patient";
 
-export default function Medicines(){
+export default function Patients(){
 
-    const { remove,update,add,data } = useAPI('medicines')
+    const { remove,update,add,data } = useAPI('patients')
     const [popup,setPopup] = useState(false)
     const [name,setName] = useState('')
-    const [price,setPrice] = useState('')
-    const [description,setDescription] = useState('')
-    const [quantity,setQuantity] = useState('')
-    const [company,setCompany] = useState('')
-    const [imageURL,setImageURL] = useState('')
+    const [age,setAge] = useState('')
+    const [gender,setGender] = useState('')
 
     console.log(data)
 
@@ -41,7 +38,7 @@ export default function Medicines(){
                         alignItems: "center"
                     }} 
                 >
-                    <Typography variant="h3" color="darkred" >Medicine</Typography>
+                    <Typography variant="h3" color="darkred" >Patients</Typography>
                 </Box>
                 <Button 
                     sx={{
@@ -58,7 +55,7 @@ export default function Medicines(){
                 {
                     data ? 
                     data.map(val => 
-                        <Medicine key={val._id} item = {val} methods={{
+                        <Patient key={val._id} item = {val} methods={{
                             update: update,
                             delete: remove
                         }} />
@@ -121,10 +118,10 @@ export default function Medicines(){
                                 InputLabelProps={{style : {color : 'green'}}}
                             />
                             <TextField
-                                label="Description"
+                                label="Age"
                                 variant="outlined"
-                                value={description}
-                                onChange={(e)=>setDescription(e.target.value)}
+                                value={age}
+                                onChange={(e)=>setAge(e.target.value)}
                                 color="info"
                                 size="small"
                                 sx={{
@@ -135,52 +132,10 @@ export default function Medicines(){
                                 InputLabelProps={{style : {color : 'green'}}}
                             />
                             <TextField
-                                label="Price"
+                                label="Gender"
                                 variant="outlined"
-                                value={price}
-                                onChange={(e)=>setPrice(e.target.value)}
-                                color="info"
-                                size="small"
-                                sx={{
-                                    input:{
-                                        color:"orange"
-                                    }
-                                }}
-                                InputLabelProps={{style : {color : 'green'}}}
-                            />
-                            <TextField
-                                label="Quantity"
-                                variant="outlined"
-                                value={quantity}
-                                onChange={(e)=>setQuantity(e.target.value)}
-                                color="info"
-                                size="small"
-                                sx={{
-                                    input:{
-                                        color:"orange"
-                                    }
-                                }}
-                                InputLabelProps={{style : {color : 'green'}}}
-                            />
-                            <TextField
-                                label="Company"
-                                variant="outlined"
-                                value={company}
-                                onChange={(e)=>setCompany(e.target.value)}
-                                color="info"
-                                size="small"
-                                sx={{
-                                    input:{
-                                        color:"orange"
-                                    }
-                                }}
-                                InputLabelProps={{style : {color : 'green'}}}
-                            />
-                            <TextField
-                                label="ImageURL"
-                                variant="outlined"
-                                value={imageURL}
-                                onChange={(e)=>setImageURL(e.target.value)}
+                                value={gender}
+                                onChange={(e)=>setGender(e.target.value)}
                                 color="info"
                                 size="small"
                                 sx={{
@@ -196,11 +151,14 @@ export default function Medicines(){
                                 onClick={()=>{
                                     add({
                                         name,
-                                        description,
-                                        price,
-                                        quantity,
-                                        company
-                                    }).then(()=>setPopup(false) )
+                                        age,
+                                        gender,
+                                    }).then(()=>{
+                                        setPopup(false)
+                                        setAge('')
+                                        setName('')
+                                        setGender('')
+                                    } )
                                     
                                 }} 
                             >

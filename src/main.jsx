@@ -4,6 +4,7 @@ import Login from './pages/Login.jsx'
 import Medicines from './pages/medicines'
 import { RouterProvider } from "react-router"
 import { createBrowserRouter } from 'react-router-dom'
+import Patients from './pages/patients.jsx'
 
 
 const router = createBrowserRouter([
@@ -14,6 +15,10 @@ const router = createBrowserRouter([
   {
     path:"/medicine",
     element:<Medicines/>
+  },
+  {
+    path:"/patient",
+    element:<Patients/>
   }
 ])
 

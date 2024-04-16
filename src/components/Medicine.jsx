@@ -1,105 +1,30 @@
+import { Box, Button, TextField, Typography } from "@mui/material"
 import { useState } from "react"
-import Box from '@mui/material/Box';
-import { Typography, Button, TextField, Container, Modal } from '@mui/material';
-import useAPI from "../hooks/UseAPI";
-import Medicine from "../components/Medicine";
 
-export default function Medicines(){
+export default function Medicine({ item, methods }) {
 
-    const { remove,update,add,data } = useAPI('medicines')
-    const [popup,setPopup] = useState(false)
-    const [name,setName] = useState('')
-    const [price,setPrice] = useState('')
-    const [description,setDescription] = useState('')
-    const [quantity,setQuantity] = useState('')
-    const [company,setCompany] = useState('')
-    const [imageURL,setImageURL] = useState('')
-
-    console.log(data)
-
+    const [updatePopup,setUpdatePopup] = useState(false) 
+    const [name,setName] = useState(item.name)
+    const [price,setPrice] = useState(item.price)
+    const [description,setDescription] = useState(item.description)
+    const [quantity,setQuantity] = useState(item.quantity)
+    const [company,setCompany] = useState(item.company)
+    const [imageURL,setImageURL] = useState(item.image_URL)
+    
     return(
         <>
-        <Container
-            sx={{
-                display:'flex',
-                flexDirection:'row',
-                alignItems:"center",
-                justifyContent:'center'
-            }}
-        >
-            <Container sx={{
+            <Box sx={{
                 display:"flex",
-                flexDirection:"column",
-                rowGap:"5px",
-                width: "60%"
+                columnGap:"5px",
+                border:"solid 2px",
+                padding:"10px",
+                width:"500px",
+                borderRadius:"10px",
+                justifyContent: "space-between",
+                alignItems: "start"
             }}>
-                <Box 
-                    sx={{
-                        display:"flex",
-                        width: "500px",
-                        columnGap: "30px",
-                        alignItems: "center"
-                    }} 
-                >
-                    <Typography variant="h3" color="darkred" >Medicine</Typography>
-                </Box>
-                <Button 
-                    sx={{
-                            width: "60px",
-                            height: "30px"
-                        }} 
-                    size="small" 
-                    variant="outlined" 
-                    color="success"
-                    onClick={()=>setPopup(!popup)}
-                >
-                    Add
-                </Button>
                 {
-                    data ? 
-                    data.map(val => 
-                        <Medicine key={val._id} item = {val} methods={{
-                            update: update,
-                            delete: remove
-                        }} />
-                    )
-                    :
-                    <Box sx={{
-                        display:"flex",
-                        columnGap:"5px",
-                        border:"solid 2px",
-                        margin: '50px',
-                        padding:"10px",
-                        width:"500px",
-                        borderRadius:"10px",
-                        justifyContent: "space-between",
-                        alignItems: "start"
-                    }}>
-                        No data
-                    </Box>
-                }
-            </Container>
-            {
-                popup && 
-                <Modal
-
-                    open={popup}
-                    sx={{
-                        alignSelf:'center',
-                        backgroundColor:'white',
-                        display:"flex",
-                        columnGap:"5px",
-                        border:"solid 2px",
-                        padding:"10px",
-                        width:"400px",
-                        borderRadius:"10px",
-                        justifyContent: "space-between",
-                        alignItems: "start",
-                        left:'1000px'
-                    }}
-                    hideBackdrop
-                    disableScrollLock={false}
-                >
+                    updatePopup ?
                     <>
                         <Box sx={{
                             display: "flex",
@@ -109,6 +34,7 @@ export default function Medicines(){
                             <TextField
                                 label="Name"
                                 variant="outlined"
+                                disabled
                                 value={name}
                                 onChange={(e)=>setName(e.target.value)}
                                 color="info"
@@ -177,7 +103,7 @@ export default function Medicines(){
                                 InputLabelProps={{style : {color : 'green'}}}
                             />
                             <TextField
-                                label="ImageURL"
+                                label="Company"
                                 variant="outlined"
                                 value={imageURL}
                                 onChange={(e)=>setImageURL(e.target.value)}
@@ -194,31 +120,56 @@ export default function Medicines(){
                         <Box display="flex" columnGap="10px">
                             <Button size="small" variant="outlined" color="info" 
                                 onClick={()=>{
-                                    add({
+                                    methods.update({
                                         name,
                                         description,
                                         price,
                                         quantity,
                                         company
-                                    }).then(()=>setPopup(false) )
+                                    }).then(()=>setUpdatePopup(false) )
                                     
                                 }} 
                             >
-                                add
+                                Submit
                             </Button>
                             <Button size="small" variant="outlined" color="error" 
-                                onClick={()=>setPopup(false) } 
+                                onClick={()=>setUpdatePopup(false)} 
                             >
-                                close
+                                Close
                             </Button>
                         </Box>
                     </>
-                    
-                </Modal>
-        }   
-        </Container>
-    </>
-)
-}
-
-
+                    :
+                    <>
+                        <Box sx={{
+                            display: "flex",
+                            flexDirection: "column"
+                        }}>
+                            <Typography paragraph>Name: {name}</Typography>
+                            <Typography paragraph textOverflow="ellipsis" overflow="hidden" whiteSpace="nowrap" width="300px" >Description: {description}</Typography>
+                            <Typography paragraph>Price: {price}</Typography>
+                            <Typography paragraph>Quantity: {quantity}</Typography>
+                            <Typography paragraph>Company: {company}</Typography>
+                            <Box display='flex' columnGap='20px' > 
+                                <Typography>ImageURL:</Typography>
+                                <img height={'100px'} src={imageURL} target="_blank" />
+                            </Box> 
+                        </Box>
+                        <Box display="flex" columnGap="10px">
+                            <Button size="small" variant="outlined" color="info" 
+                                onClick={()=>setUpdatePopup(true)} 
+                            >
+                                Update
+                            </Button>
+                            <Button size="small" variant="outlined" color="error" 
+                                onClick={()=>methods.delete({name})} 
+                            >
+                                Remove
+                            </Button>
+                        </Box>
+                    </>
+                }
+            </Box>
+            </>
+        )
+    }
