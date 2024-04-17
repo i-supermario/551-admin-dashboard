@@ -199,7 +199,8 @@ export default function Medicines(){
                                         description,
                                         price,
                                         quantity,
-                                        company
+                                        company,
+                                        imageURL
                                     }).then(()=>setPopup(false) )
                                     
                                 }} 

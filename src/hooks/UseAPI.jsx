@@ -9,6 +9,7 @@ export default function useAPI(path){
     const BASE = `http://localhost:7000/${path}`
 
     const [data,setData] = useState([])
+    console.log(data)
 
     const getConfig = (method) => {
         return {
@@ -32,19 +33,25 @@ export default function useAPI(path){
 
     const getAll = async () => {
         const URL = `${BASE}/getAll`
-        const config = getConfig('GET')
+        const config = {
+            method: 'GET',
+        }
 
         const response = await fetch(URL,config)
         if(response.status==200){
-            return response.json()
+            const responseJSon = await response.json()
+            console.log(responseJSon)
+            return responseJSon
         }
         
-        return null
+        return []
 
 
     }
     
     const add = async (item) => {
+        console.log(item)
+        console.log(data)
         const URL = `${BASE}/add`
         var formBody = [];
         if(!item.name) return null
@@ -91,6 +98,8 @@ export default function useAPI(path){
             },
             body: formBody
         }
+
+        console.log(config)
         const response = await fetch(URL,config)
         console.log(response)
         if(response.status==200){
@@ -138,7 +147,7 @@ export default function useAPI(path){
 
     useEffect( ()=>{
         getAll()
-        .then(data => setData(data))
+        .then(data => setData(data || []))
         .catch(error => console.log(error))
     },[])
 

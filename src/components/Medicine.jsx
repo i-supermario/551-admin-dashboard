@@ -9,7 +9,7 @@ export default function Medicine({ item, methods }) {
     const [description,setDescription] = useState(item.description)
     const [quantity,setQuantity] = useState(item.quantity)
     const [company,setCompany] = useState(item.company)
-    const [imageURL,setImageURL] = useState(item.image_URL)
+    const [imageURL,setImageURL] = useState(item.imageURL)
     
     return(
         <>
@@ -125,7 +125,8 @@ export default function Medicine({ item, methods }) {
                                         description,
                                         price,
                                         quantity,
-                                        company
+                                        company,
+                                        imageURL
                                     }).then(()=>setUpdatePopup(false) )
                                     
                                 }} 
